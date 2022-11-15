@@ -1,0 +1,6 @@
+#ignore InfluxDB data
+influxdb*/*
+#ignore Telegraf debug
+telegraf/*
+#ignore tem Telegraf configs
+etc/telegraf/telegraf.d/*.inactive

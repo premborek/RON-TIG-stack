@@ -1,0 +1,77 @@
+#
+# Copyright (c) 2022 Cisco Systems
+# Author: Prem Borek <prborek@cisco.com>
+#
+
+version: "3"
+
+services:
+
+  influxdb1.0:
+        restart: unless-stopped
+        image: influxdb:1.8 
+        container_name: influxdb1.0
+        environment:
+        #        - "INFLUXD_CONFIG_PATH=${APP_FOLDER}/etc/influxdb/influxdb.conf"  
+                - "INFLUXDB_REPORTING_DISABLED=true"
+                - "INFLUXDB_DATA_QUERY_LOG_ENABLED=false"
+                - "INFLUXDB_HTTP_LOG_ENABLED=false"
+                - "INFLUXDB_CONTINUOUS_QUERIES_LOG_ENABLED=false"
+                - "INFLUXDB_HTTP_AUTH_ENABLED=false"    
+        volumes:
+                - ${APP_FOLDER}/etc/influxdb/scripts/init.iql:/docker-entrypoint-initdb.d/init.iql:ro
+        ports:
+                - "${INFLUXDB10_PORT}:8086"
+
+
+  telegraf:
+        restart: unless-stopped
+        image: telegraf:1.22.3
+        container_name: telegraf
+        depends_on:
+                - influxdb1.0
+        command: telegraf --config-directory /etc/telegraf/telegraf.d
+        environment:
+                - DOCKER_IP=${DOCKER_IP}
+                - INFLUXDB10_PORT=${INFLUXDB10_PORT}
+                - ROUTER1=${ROUTER1}
+                - ROUTER2=${ROUTER2}
+                - ROUTER1_NAME=${ROUTER1_NAME}
+                - ROUTER2_NAME=${ROUTER2_NAME}
+                - ROUTER_GRPC_PORT=${ROUTER_GRPC_PORT}
+                - ROUTER_USERNAME=${ROUTER_USERNAME}
+                - ROUTER_PASSWORD=${ROUTER_PASSWORD}
+        volumes:
+                - ${APP_FOLDER}/etc/telegraf/telegraf.conf:/etc/telegraf/telegraf.conf:ro
+                - ${APP_FOLDER}/etc/telegraf/telegraf.d:/etc/telegraf/telegraf.d:ro
+        ports:
+  # port for incoming MDT gRPC connection
+                - "${MDT_GRPC_PORT}:57000"
+                - "9273:9273"
+
+
+  grafana:
+        restart: unless-stopped
+        image: grafana/grafana:8.5.6
+        container_name: grafana
+        environment:
+                - "GF_SECURITY_ADMIN_PASSWORD=${GRAFANA_PASS}"
+                - "GF_PANELS_DISABLE_SANITIZE_HTML=true"
+                - "INFLUXDB10_SOCKET=http://${DOCKER_IP}:${INFLUXDB10_PORT}"
+  # Set home dashboard
+                - "GF_DASHBOARDS_DEFAULT_HOME_DASHBOARD_PATH=/etc/grafana/dashboards/Main_Dashboard.json"
+  # Allow anonymous user access
+                - "GF_AUTH_ANONYMOUS_ENABLED=true"
+                - "GF_AUTH_ANONYMOUS_ORG_ROLE=Viewer"
+                - "GF_AUTH_ANONYMOUS_ORG_NAME=Main Org."  
+        ports:
+                - "${GRAFANA_PORT}:3000"
+        volumes:
+                - ${APP_FOLDER}/etc/grafana/provisioning:/etc/grafana/provisioning:ro
+                - ${APP_FOLDER}/etc/grafana/dashboards:/etc/grafana/dashboards:ro
+
+networks:                                
+  default:                               
+    driver: bridge                       
+    driver_opts:                         
+      com.docker.network.driver.mtu: 1300 

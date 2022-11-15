@@ -1,0 +1,21 @@
+apiVersion: 1
+
+datasources:
+  - name: "InfluxDB1.0"
+    type: "influxdb"
+    access: "direct"
+    database: "metrics"
+    orgId: 1
+    url: "$INFLUXDB10_SOCKET"
+    isDefault: true
+    version: 1
+    editable: true
+  - name: "kafka"
+    type: "influxdb"
+    access: "direct"
+    database: "cdg_export"
+    orgId: 1
+    url: "$INFLUXDB10_SOCKET"
+    isDefault: false
+    version: 1
+    editable: true
