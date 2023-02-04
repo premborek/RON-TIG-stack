@@ -1,6 +1,10 @@
 # TIG (Telegraf / InfluxDB / Grafana) Stack For Monitoring RON Link
 
-Sample TIG stack collecting telemetry data from Cisco routers equipped with ZR/ZRP 400G transceivers. Telemetry is based on gNMI protocol and native Yang models.
+Sample TIG stack collecting telemetry data from Cisco routers equipped with ZR/ZRP 400G transceivers. 
+
+![image](https://user-images.githubusercontent.com/118137428/216769416-63d638ca-523e-4b51-a770-ef9dc5fa49b8.png)
+
+Telemetry is based on gNMI protocol and native Yang models.
 
 ## Installation:
   1. Clone repo
