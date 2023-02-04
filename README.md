@@ -12,7 +12,7 @@ Telemetry is based on gNMI protocol and native Yang models.
      * Docker IP address to match your host IP
      * Grafana Admin password (if needed, default is **changemeplease**)
      * Aplication ports if needed
-     * Routers IP, names and credentials
+     * Routers IP and credentials
   3. Run `docker-compose up -d`
   4. Updata Grafana dashboard with correct router names (on To Do list to get it done automatically:))
      * Go to dashboard properties
