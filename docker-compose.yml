@@ -11,8 +11,7 @@ services:
         restart: unless-stopped
         image: influxdb:1.8 
         container_name: influxdb1.0
-        environment:
-        #        - "INFLUXD_CONFIG_PATH=${APP_FOLDER}/etc/influxdb/influxdb.conf"  
+        environment: 
                 - "INFLUXDB_REPORTING_DISABLED=true"
                 - "INFLUXDB_DATA_QUERY_LOG_ENABLED=false"
                 - "INFLUXDB_HTTP_LOG_ENABLED=false"
