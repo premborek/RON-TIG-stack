@@ -1,6 +1,10 @@
 # TIG (Telegraf / InfluxDB / Grafana) Stack For Monitoring RON Link
 
-Sample TIG stack collecting telemetry data from Cisco routers equipped with ZR/ZRP 400G transceivers. Telemetry is based on gNMI protocol and native Yang models.
+Sample TIG stack collecting telemetry data from Cisco routers equipped with ZR/ZRP 400G transceivers. 
+
+![image](https://user-images.githubusercontent.com/118137428/216769416-63d638ca-523e-4b51-a770-ef9dc5fa49b8.png)
+
+Telemetry is based on gNMI protocol and native Yang models.
 
 ## Installation:
   1. Clone repo
@@ -8,7 +12,7 @@ Sample TIG stack collecting telemetry data from Cisco routers equipped with ZR/Z
      * Docker IP address to match your host IP
      * Grafana Admin password (if needed, default is **changemeplease**)
      * Aplication ports if needed
-     * Routers IP, names and credentials
+     * Routers IP and credentials
   3. Run `docker-compose up -d`
   4. Updata Grafana dashboard with correct router names (on To Do list to get it done automatically:))
      * Go to dashboard properties
